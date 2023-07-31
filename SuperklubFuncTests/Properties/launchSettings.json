@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SuperklubFuncTests": {
+      "commandName": "Project",
+      "commandLineArgs": "1"
+    }
+  }
+}
