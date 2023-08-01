@@ -8,20 +8,18 @@ namespace SuperklubUnitTests
     public class SupersynkClientDTOsTests
     {
         [TestMethod]
-        public void FromJSONStringTest()
+        public void FromJsonStringTest()
         {
-            string oneClientString = "{\"client_id\":\"ada\",\"properties\":[{\"key\":\"titi\",\"value\":\"toto\"}]}";
+            string oneClientString = "{\"client_id\":\"ada\",\"data\":[\"titi\"]}";
             string clientsString = "[" + oneClientString + "]";
 
-            SupersynkClientDTOs DTOs = new SupersynkClientDTOs();
-            DTOs.FromJSONString(clientsString);
+            SupersynkClientDTOs DTOs = SupersynkClientDTOs.FromJsonString(clientsString);
 
-            Assert.AreEqual(1, DTOs.List.Count);
-            var dto = DTOs.List[0];
+            Assert.AreEqual(1, DTOs.Count);
+            var dto = DTOs[0];
             Assert.AreEqual("ada", dto.ClientId);
-            Assert.AreEqual(1, dto.Properties.Count);
-            Assert.AreEqual("titi", dto.Properties[0].Key);
-            Assert.AreEqual("toto", dto.Properties[0].Value);
+            Assert.AreEqual(1, dto.Data.Count);
+            Assert.AreEqual("titi", dto.Data[0]);
         }
     }
 }

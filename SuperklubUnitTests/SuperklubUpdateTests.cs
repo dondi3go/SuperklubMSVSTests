@@ -15,12 +15,12 @@ namespace SuperklubUnitTests
         {
             SupersynkClientDTOs oldDTOs = new SupersynkClientDTOs();
             SupersynkClientDTO oldDTO = new SupersynkClientDTO("ada");
-            oldDTO.AddProperty("head", "shape=ball");
+            oldDTO.Data.Add("id=head;shape=ball");
             oldDTOs.Add(oldDTO);
             
             SupersynkClientDTOs newDTOs = new SupersynkClientDTOs();
             SupersynkClientDTO newDTO = new SupersynkClientDTO("ada");
-            newDTO.AddProperty("head", "shape=box");
+            newDTO.Data.Add("id=head;shape=box");
             newDTOs.Add(newDTO);
 
             // Create update object
@@ -44,7 +44,7 @@ namespace SuperklubUnitTests
 
             SupersynkClientDTOs newDTOs = new SupersynkClientDTOs();
             SupersynkClientDTO newDTO = new SupersynkClientDTO("ada");
-            newDTO.AddProperty("head", "shape=box");
+            newDTO.Data.Add("id=head;shape=box");
             newDTOs.Add(newDTO);
 
             // Create Update object
@@ -66,7 +66,7 @@ namespace SuperklubUnitTests
         {
             SupersynkClientDTOs oldDTOs = new SupersynkClientDTOs();
             SupersynkClientDTO oldDTO = new SupersynkClientDTO("ada");
-            oldDTO.AddProperty("head", "shape=ball");
+            oldDTO.Data.Add("id=head;shape=ball");
             oldDTOs.Add(oldDTO);
 
             SupersynkClientDTOs newDTOs = new SupersynkClientDTOs();

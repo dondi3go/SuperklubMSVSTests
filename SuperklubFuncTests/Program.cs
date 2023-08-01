@@ -26,7 +26,7 @@ async Task Scenario01()
 
     Console.WriteLine("- The server status is " + supersynkClient.Status.ToString());
 
-    Console.WriteLine("- The channel contains " + res.List.Count + " clients");
+    Console.WriteLine("- The channel contains " + res.Count + " clients");
 }
 
 

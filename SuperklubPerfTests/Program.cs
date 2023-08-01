@@ -3,7 +3,7 @@
 
 async Task RunSupersynkPerfTest()
 {
-    Console.WriteLine("Running Scenario 02 (Supersynk POST performance) : ");
+    Console.WriteLine("Running Supersynk POST performance test : ");
 
     // Create client
     IHttpClient httpClient = new MSHttpClient(
@@ -44,7 +44,7 @@ async Task RunSupersynkPerfTest()
 
 async Task RunSuperklubPerfTest()
 {
-    Console.WriteLine("Running Scenario 05 (Superklub synchronization performance) : ");
+    Console.WriteLine("Running Superklub synchronization performance test : ");
 
     // Create client
     IHttpClient httpClient = new MSHttpClient(

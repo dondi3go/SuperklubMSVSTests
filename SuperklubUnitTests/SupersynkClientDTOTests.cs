@@ -6,14 +6,14 @@ namespace SuperklubUnitTests
     public class SupersynkClientDTOTests
     {
         [TestMethod]
-        public void ToJSONStringTest()
+        public void ToJsonStringTest()
         {
             SupersynkClientDTO dto = new SupersynkClientDTO("ada");
-            dto.AddProperty("titi", "toto");
+            dto.Data.Add("titi");
 
-            string jsonString = dto.ToJSONString();
+            string jsonString = dto.ToJsonString();
 
-            string expectedString = "{\"client_id\":\"ada\",\"properties\":[{\"key\":\"titi\",\"value\":\"toto\"}]}";
+            string expectedString = "{\"client_id\":\"ada\",\"data\":[\"titi\"]}";
             Assert.AreEqual(expectedString, jsonString);
         }
     }

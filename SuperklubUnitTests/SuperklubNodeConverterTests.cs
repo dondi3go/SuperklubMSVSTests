@@ -9,6 +9,7 @@ namespace SuperklubUnitTests
         public void TestConvertToString()
         {
             SuperklubNodeRecord node = new SuperklubNodeRecord();
+            node.Id = "a";
             node.Position = (1.1f, 2.2f, 3.3f);
             node.Rotation = (0f, 1f, 0f, 0f);
             node.Shape = "pill";
@@ -16,7 +17,7 @@ namespace SuperklubUnitTests
 
             string str = SuperklubNodeConverter.ConvertToString(node);
 
-            Assert.AreEqual("pos=1.1,2.2,3.3;rot=0,1,0,0;shape=pill;color=green", str);
+            Assert.AreEqual("id=a;pos=1.1,2.2,3.3;rot=0,1,0,0;shape=pill;color=green", str);
         }
 
         [TestMethod]
@@ -59,18 +60,18 @@ namespace SuperklubUnitTests
         public void TestConvertFromSupersynk()
         {
             SupersynkClientDTO dto = new SupersynkClientDTO("ada");
-            dto.AddProperty("head", "pos=1,2,3;rot=0,1,0,0;shape=box;color=blue");
+            dto.Data.Add("id=head;pos=1,2,3;rot=0,1,0,0;shape=box;color=blue");
             
             var nodes = SuperklubNodeConverter.ConvertFromSupersynk(dto);
 
             Assert.IsNotNull(nodes);
             Assert.AreEqual(1, nodes.Count);
             var node = nodes[0];
-            Assert.AreEqual(node.Id, "ada:head");
-            Assert.AreEqual(node.Position, (1, 2, 3));
-            Assert.AreEqual(node.Rotation, (0, 1, 0, 0));
-            Assert.AreEqual(node.Shape, "box");
-            Assert.AreEqual(node.Color, "blue");
+            Assert.AreEqual("ada:head", node.Id);
+            Assert.AreEqual((1, 2, 3), node.Position);
+            Assert.AreEqual((0, 1, 0, 0), node.Rotation);
+            Assert.AreEqual("box", node.Shape);
+            Assert.AreEqual("blue", node.Color);
         }
     }
 }
