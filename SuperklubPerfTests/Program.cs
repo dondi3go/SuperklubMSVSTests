@@ -1,22 +1,25 @@
 ﻿using Superklub;
+using System.Threading.Channels;
+using static System.Net.WebRequestMethods;
 
 
-async Task RunSupersynkPerfTest()
+async Task RunSupersynkPerfTest(string serverUrl, string channel)
 {
     Console.WriteLine("Running Supersynk POST performance test : ");
 
     // Create client
-    IHttpClient httpClient = new MSHttpClient(
-        new Uri("http://127.0.0.1:9999"),
-        "api/channels", "default");
+    IHttpClient httpClient = new MSHttpClient();
     SupersynkClient supersynkClient = new SupersynkClient(httpClient);
+
+    // Url for requests
+    string url = serverUrl + "/api/channels/" + channel;
 
     // Create data to send to the server
     SupersynkClientDTO dto = new SupersynkClientDTO("ada");
 
     // Send the first request
     Console.WriteLine("- Performing first POST requests to the server");
-    await supersynkClient.PostAsync(dto);
+    await supersynkClient.PostAsync(url, dto);
 
     // Show server status
     Console.WriteLine("- The server status is " + supersynkClient.Status.ToString());
@@ -31,7 +34,7 @@ async Task RunSupersynkPerfTest()
     // Perform requests
     for (int i = 0; i < requestCount; i++)
     {
-        await supersynkClient.PostAsync(dto);
+        await supersynkClient.PostAsync(url, dto);
     }
 
     // Stop watch
@@ -42,19 +45,19 @@ async Task RunSupersynkPerfTest()
     Console.WriteLine("- Average time per request = " + avg);
 }
 
-async Task RunSuperklubPerfTest()
+async Task RunSuperklubPerfTest(string serverUrl, string channel)
 {
     Console.WriteLine("Running Superklub synchronization performance test : ");
 
     // Create client
-    IHttpClient httpClient = new MSHttpClient(
-        new Uri("http://127.0.0.1:9999"),
-        "api/channels", "default");
+    IHttpClient httpClient = new MSHttpClient();
     SupersynkClient supersynkClient = new SupersynkClient(httpClient);
 
     // Create superklub manager
     Console.WriteLine("- Creating Superklub manager");
     SuperklubManager manager = new SuperklubManager(supersynkClient);
+    manager.ServerUrl = serverUrl;
+    manager.Channel = channel;
 
     // Create local node
     var redBox = new SuperklubNodeRecord();
@@ -95,6 +98,7 @@ async Task RunSuperklubPerfTest()
     Console.WriteLine("- Average time per request = " + avg);
 }
 
+await RunSuperklubPerfTest("http://127.0.0.1:9999", "default");
 
-await RunSupersynkPerfTest();
-await RunSuperklubPerfTest();
+await RunSupersynkPerfTest("http://127.0.0.1:9999", "default");
+

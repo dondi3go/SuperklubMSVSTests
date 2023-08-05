@@ -9,21 +9,11 @@ using System.Net.Http;
 public class MSHttpClient : Superklub.IHttpClient
 {
     private HttpClient httpClient = new HttpClient();
-    private string requestPath;
-        
+    
     /// <summary>
     /// 
     /// </summary>
-    public MSHttpClient(Uri baseAddress, string apiPath, string channelName)
-    { 
-        httpClient.BaseAddress = baseAddress;
-        this.requestPath = string.Join("/", apiPath, channelName);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public async Task<HttpResponse> PostAsync(string jsonStringInput)
+    public async Task<HttpResponse> PostAsync(string url, string jsonStringInput)
     {
         // Create HTTP Content
         var httpContent = new StringContent(jsonStringInput);
@@ -32,7 +22,7 @@ public class MSHttpClient : Superklub.IHttpClient
         HttpResponseMessage response;
         try
         {
-            response = await httpClient.PostAsync(requestPath, httpContent);
+            response = await httpClient.PostAsync(url, httpContent);
         }
         catch
         {
@@ -57,13 +47,13 @@ public class MSHttpClient : Superklub.IHttpClient
     /// <summary>
     /// 
     /// </summary>
-    public async Task<HttpResponse> GetAsync()
+    public async Task<HttpResponse> GetAsync(string url)
     {
         // Perform HTTP request
         HttpResponseMessage response;
         try
         {
-            response = await httpClient.GetAsync(requestPath);
+            response = await httpClient.GetAsync(url);
         }
         catch
         {

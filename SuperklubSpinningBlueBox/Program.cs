@@ -10,14 +10,14 @@ async Task RunSpinningBlueBox()
     Console.WriteLine("Running Superklub blue box spinning :");
 
     // Create client
-    IHttpClient httpClient = new MSHttpClient(
-        new Uri("http://127.0.0.1:9999"),
-        "api/channels", "default");
+    IHttpClient httpClient = new MSHttpClient();
     SupersynkClient supersynkClient = new SupersynkClient(httpClient);
 
     // Create superklub manager
     Console.WriteLine("- Creating Superklub manager");
     SuperklubManager manager = new SuperklubManager(supersynkClient);
+    manager.ServerUrl = "http://127.0.0.1:9999";
+    manager.Channel = "default";
 
     // Create local node
     var blueBox = new SuperklubNodeRecord();

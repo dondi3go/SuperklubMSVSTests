@@ -1,15 +1,17 @@
 ﻿using Superklub;
+using static System.Net.WebRequestMethods;
 
-async Task Scenario01()
+async Task Scenario01(string serverUrl, string channel)
 {
     Console.WriteLine("Running Scenario 01 (Supersynk basic requests) :");
 
     // Create client
-    IHttpClient httpClient = new MSHttpClient(
-        new Uri("http://127.0.0.1:9999"),
-        "api/channels", "default");
+    IHttpClient httpClient = new MSHttpClient();
     SupersynkClient supersynkClient = new SupersynkClient(httpClient);
     Console.WriteLine("- The server status is " + supersynkClient.Status.ToString());
+
+    // Url
+    string url = serverUrl + "/api/channels/" + channel;
 
     // Create minimal data for the server
     SupersynkClientDTO dto = new SupersynkClientDTO("ada");
@@ -17,32 +19,31 @@ async Task Scenario01()
     // Start exchanges with the server
 
     Console.WriteLine("- Sending POST request to server");
-    await supersynkClient.PostAsync(dto);
+    await supersynkClient.PostAsync(url, dto);
 
     Console.WriteLine("- The server status is " + supersynkClient.Status.ToString());
 
     Console.WriteLine("- Sending GET request to server");
-    var res = await supersynkClient.GetAsync();
+    var res = await supersynkClient.GetAsync(url);
 
     Console.WriteLine("- The server status is " + supersynkClient.Status.ToString());
 
     Console.WriteLine("- The channel contains " + res.Count + " clients");
 }
 
-
-async Task Scenario02()
+async Task Scenario02(string serverUrl, string channel)
 {
-    Console.WriteLine("Running Scenario 03 (Superklub basic participant) :");
+    Console.WriteLine("Running Scenario 02 (Superklub basic participant) :");
 
     // Create client
-    IHttpClient httpClient = new MSHttpClient(
-         new Uri("http://127.0.0.1:9999"),
-         "api/channels", "default");
+    IHttpClient httpClient = new MSHttpClient();
     SupersynkClient supersynkClient = new SupersynkClient(httpClient);
 
     // Create superklub manager
     Console.WriteLine("- Creating Superklub manager");
     SuperklubManager manager = new SuperklubManager(supersynkClient);
+    manager.ServerUrl = serverUrl;
+    manager.Channel = channel;
 
     // Create local node
     var redBox = new SuperklubNodeRecord();
@@ -67,19 +68,19 @@ async Task Scenario02()
     Console.WriteLine("- Nodes to delete = " + update.nodesToDelete.Count);
 }
 
-async Task Scenario03()
+async Task Scenario03(string serverUrl, string channel)
 {
-    Console.WriteLine("Running Scenario 04 (Superklub basic observer) :");
+    Console.WriteLine("Running Scenario 03 (Superklub basic observer) :");
 
     // Create client
-    IHttpClient httpClient = new MSHttpClient(
-        new Uri("http://127.0.0.1:9999"),
-        "api/channels", "default");
+    IHttpClient httpClient = new MSHttpClient();
     SupersynkClient supersynkClient = new SupersynkClient(httpClient);
 
     // Create superklub manager
     Console.WriteLine("- Creating Superklub manager");
     SuperklubManager manager = new SuperklubManager(supersynkClient);
+    manager.ServerUrl = serverUrl;
+    manager.Channel = channel;
 
     // Perform one synchronization with the server
     Console.WriteLine("- Performing Superklub synchronization as an observer");
@@ -93,25 +94,4 @@ async Task Scenario03()
     Console.WriteLine("- Nodes to delete = " + update.nodesToDelete.Count);
 }
 
-await Scenario03();
-
-/*
-class MainClass
-{
-    static void Main(string[] args)
-    {
-        Console.WriteLine("Starting functionnal tests");
-        Console.WriteLine(args.Length);
-        if (args.Length == 1)
-        {
-            int parameter = 0;
-            if (int.TryParse(args[0], out parameter))
-            {
-                Console.WriteLine(parameter);
-            }
-        }
-        Console.WriteLine(args.Length);
-    }
-}*/
-
-
+await Scenario03("http://127.0.0.1:9999", "default");
