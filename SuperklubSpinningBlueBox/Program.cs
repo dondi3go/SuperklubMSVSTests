@@ -5,7 +5,7 @@ using System.Numerics;
 // Send to Superklub a blue box spinning around origin in the XZ plane
 // Note : url and port are hardcoded for the time being
 //
-async Task RunSpinningBlueBox()
+async Task RunSpinningBlueBox(string serverUrl, string channel)
 {
     Console.WriteLine("Running Superklub blue box spinning :");
 
@@ -16,8 +16,8 @@ async Task RunSpinningBlueBox()
     // Create superklub manager
     Console.WriteLine("- Creating Superklub manager");
     SuperklubManager manager = new SuperklubManager(supersynkClient);
-    manager.ServerUrl = "http://127.0.0.1:9999";
-    manager.Channel = "default";
+    manager.ServerUrl = serverUrl;
+    manager.Channel = channel;
 
     // Create local node
     var blueBox = new SuperklubNodeRecord();
@@ -56,4 +56,6 @@ async Task RunSpinningBlueBox()
     }
 }
 
-await RunSpinningBlueBox();
+string serverUrl = "http://127.0.0.1:5000";
+string channel = "spinningBlueBox";
+await RunSpinningBlueBox(serverUrl, channel);
