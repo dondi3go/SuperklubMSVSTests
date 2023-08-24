@@ -24,9 +24,9 @@ public class MSHttpClient : Superklub.IHttpClient
         {
             response = await httpClient.PostAsync(url, httpContent);
         }
-        catch
+        catch (Exception e)
         {
-            return new HttpResponse(0, "");
+            return new HttpResponse(0, e.Message);
         }
 
         // Check HTTP return code
@@ -34,9 +34,9 @@ public class MSHttpClient : Superklub.IHttpClient
         {
             response.EnsureSuccessStatusCode();
         }
-        catch
+        catch (Exception e)
         {
-            return new HttpResponse((int)response.StatusCode, "");
+            return new HttpResponse((int)response.StatusCode, e.Message);
         }
 
         var jsonStringOutput = await response.Content.ReadAsStringAsync();
@@ -55,9 +55,9 @@ public class MSHttpClient : Superklub.IHttpClient
         {
             response = await httpClient.GetAsync(url);
         }
-        catch
+        catch (Exception e)
         {
-            return new HttpResponse(0, "");
+            return new HttpResponse(0, e.Message);
         }
 
         // Check HTTP return code
@@ -65,9 +65,9 @@ public class MSHttpClient : Superklub.IHttpClient
         {
             response.EnsureSuccessStatusCode();
         }
-        catch
+        catch (Exception e)
         {
-            return new HttpResponse((int)response.StatusCode, "");
+            return new HttpResponse((int)response.StatusCode, e.Message);
         }
 
         var jsonStringOutput = await response.Content.ReadAsStringAsync();
