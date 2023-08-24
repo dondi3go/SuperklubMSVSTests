@@ -42,7 +42,7 @@ async Task RunSupersynkPerfTest(string serverUrl, string channel)
 
     // Display result
     float avg = (float)watch.ElapsedMilliseconds / (float)requestCount;
-    Console.WriteLine("- Average time per request = " + avg);
+    Console.WriteLine("- Average time per request = " + avg + " ms");
 }
 
 async Task RunSuperklubPerfTest(string serverUrl, string channel)
@@ -95,10 +95,12 @@ async Task RunSuperklubPerfTest(string serverUrl, string channel)
 
     // Display result
     float avg = (float)watch.ElapsedMilliseconds / (float)requestCount;
-    Console.WriteLine("- Average time per request = " + avg);
+    Console.WriteLine("- Average time per request = " + avg + " ms");
 }
 
-await RunSuperklubPerfTest("http://127.0.0.1:9999", "default");
+string serverUrl = "http://127.0.0.1:5000";
+string channel = "default";
 
-await RunSupersynkPerfTest("http://127.0.0.1:9999", "default");
+await RunSuperklubPerfTest(serverUrl, channel);
+await RunSupersynkPerfTest(serverUrl, channel);
 
