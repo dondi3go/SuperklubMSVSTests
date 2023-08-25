@@ -25,11 +25,14 @@ async Task Scenario01(string serverUrl, string channel)
     Console.WriteLine("- The server status is " + supersynkClient.Status.ToString());
 
     Console.WriteLine("- Sending GET request to server");
-    var res = await supersynkClient.GetAsync(url);
+    SupersynkClientDTOs? res = await supersynkClient.GetAsync(url);
 
     Console.WriteLine("- The server status is " + supersynkClient.Status.ToString());
-
-    Console.WriteLine("- The channel contains " + res.Count + " clients");
+    
+    if(res == null)
+        Console.WriteLine("- The response is null");
+    else
+        Console.WriteLine("- The channel contains " + res.Count + " clients");
 }
 
 async Task Scenario02(string serverUrl, string channel)
@@ -153,6 +156,11 @@ async Task Scenario04(string serverUrl, string channel, int callPerSecond)
 //
 //
 //
+
 string serverUrl = "http://127.0.0.1:5000";
-await Scenario04(serverUrl, "linearProgression", 20);
+await Scenario04(serverUrl, "linearProgression", 50);
+
+/*string serverUrl = "http://127.0.0.1:5000";
+await Scenario02(serverUrl, "functionnalTest");
+await Scenario03(serverUrl, "functionnalTest");*/
 

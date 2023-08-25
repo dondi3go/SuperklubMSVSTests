@@ -57,8 +57,7 @@ public class WriterThreadWorker
             // Log
             Console.WriteLine("Writer loop (" + manager.ClientId + "), " + redBox.Position.x);
 
-            // Do not await response
-            //await manager.SynchronizeLocalAndDistantNodes().ConfigureAwait(false);
+            // Do not await response (on purpose)
             manager.SynchronizeLocalAndDistantNodes();
 
             // Wait before looping
