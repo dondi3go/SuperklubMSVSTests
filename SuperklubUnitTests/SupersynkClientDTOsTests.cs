@@ -13,8 +13,9 @@ namespace SuperklubUnitTests
             string oneClientString = "{\"client_id\":\"ada\",\"data\":[\"titi\"]}";
             string clientsString = "[" + oneClientString + "]";
 
-            SupersynkClientDTOs DTOs = SupersynkClientDTOs.FromJsonString(clientsString);
+            SupersynkClientDTOs? DTOs = SupersynkClientDTOs.FromJsonString(clientsString);
 
+            Assert.IsNotNull(DTOs);
             Assert.AreEqual(1, DTOs.Count);
             var dto = DTOs[0];
             Assert.AreEqual("ada", dto.ClientId);

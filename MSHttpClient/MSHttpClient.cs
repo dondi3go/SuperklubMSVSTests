@@ -1,4 +1,5 @@
 ﻿using Superklub;
+using System.Linq;
 using System.Net.Http;
 
 
@@ -13,23 +14,35 @@ public class MSHttpClient : Superklub.IHttpClient
     /// <summary>
     /// 
     /// </summary>
-    public async Task<HttpResponse> PostAsync(string url, string jsonStringInput)
+    public async Task<HttpResponse> PostAsync(
+        string url,
+        string jsonStringInput,
+        List<CustomRequestHeader>? customRequestHeaders,
+        CustomResponseHeader? customResponseHeader)
     {
-        // Create HTTP Content
-        var httpContent = new StringContent(jsonStringInput);
+        // Create POST request
+        var request = new HttpRequestMessage()
+        {
+            RequestUri = new Uri(url),
+            Content = new StringContent(jsonStringInput),
+            Method = HttpMethod.Post,
+        };
 
-        // Perform HTTP request
+        // Add request header (if exists)
+        AddRequestHeaders(request, customRequestHeaders);
+
+        // Send request
         HttpResponseMessage response;
         try
         {
-            response = await httpClient.PostAsync(url, httpContent);
+            response = await httpClient.SendAsync(request);
         }
         catch (Exception e)
         {
             return new HttpResponse(0, e.Message);
         }
 
-        // Check HTTP return code
+        // Check return code
         try
         {
             response.EnsureSuccessStatusCode();
@@ -39,28 +52,45 @@ public class MSHttpClient : Superklub.IHttpClient
             return new HttpResponse((int)response.StatusCode, e.Message);
         }
 
+        // Get response payload
         var jsonStringOutput = await response.Content.ReadAsStringAsync();
 
-        return new HttpResponse((int)response.StatusCode, jsonStringOutput);
+        // Get response header (if exists)
+        var headerValue = GetResponseHeader(response, customResponseHeader);
+
+        return new HttpResponse((int)response.StatusCode, jsonStringOutput, headerValue);
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public async Task<HttpResponse> GetAsync(string url)
+    public async Task<HttpResponse> GetAsync(
+        string url,
+        List<CustomRequestHeader>? customRequestHeaders,
+        CustomResponseHeader? customResponseHeader)
     {
-        // Perform HTTP request
-        HttpResponseMessage response;
+        // Create GET request
+        var request = new HttpRequestMessage()
+        {
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Get,
+        };
+
+        // Add request header (if exists)
+        AddRequestHeaders(request, customRequestHeaders);
+
+         // Send request
+         HttpResponseMessage response;
         try
         {
-            response = await httpClient.GetAsync(url);
+            response = await httpClient.SendAsync(request);
         }
         catch (Exception e)
         {
             return new HttpResponse(0, e.Message);
         }
 
-        // Check HTTP return code
+        // Check return code
         try
         {
             response.EnsureSuccessStatusCode();
@@ -70,8 +100,49 @@ public class MSHttpClient : Superklub.IHttpClient
             return new HttpResponse((int)response.StatusCode, e.Message);
         }
 
+        // Get response payload
         var jsonStringOutput = await response.Content.ReadAsStringAsync();
 
-        return new HttpResponse((int)response.StatusCode, jsonStringOutput);
+        // Get response header (if exists)
+        var headerValue = GetResponseHeader(response, customResponseHeader);
+
+        return new HttpResponse((int)response.StatusCode, jsonStringOutput, headerValue);
+    }
+
+    /// <summary>
+    /// Add a header (key string and value) to an HttpRequestMessage
+    /// </summary>
+    private void AddRequestHeaders(HttpRequestMessage request, List<CustomRequestHeader>? customRequestHeaders)
+    {
+        if (customRequestHeaders == null)
+        {
+            return;
+        }
+        foreach (var customRequestHeader in customRequestHeaders)
+        {
+            if(!customRequestHeader.IsEmpty())
+            {
+                request.Headers.Add(customRequestHeader.Key, customRequestHeader.Value);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Extract a header value from an HttpResponseMessage
+    /// </summary>
+    private string GetResponseHeader(HttpResponseMessage response, CustomResponseHeader? customResponseHeader)
+    {
+        if (customResponseHeader != null && !customResponseHeader.IsEmpty())
+        {
+            if (response.Headers.Contains(customResponseHeader.Key))
+            {
+                var headerValues = response.Headers.GetValues(customResponseHeader.Key);
+                if (headerValues.Count() > 0)
+                {
+                    return headerValues.First();
+                }
+            }
+        }
+        return string.Empty;
     }
 }
