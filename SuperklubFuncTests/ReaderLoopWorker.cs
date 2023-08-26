@@ -5,7 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+/// <summary>
+/// Run 1000 read requests to a channel and count
+/// - the late responses
+/// - the correct responses
+/// </summary>
 public class ReaderLoopWorker
 {
     SupersynkClient supersynkClient;
