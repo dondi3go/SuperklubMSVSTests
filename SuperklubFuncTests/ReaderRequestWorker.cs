@@ -12,21 +12,21 @@ using System.Threading.Tasks;
 /// </summary>
 public class ReaderRequestWorker
 {
-    SuperklubManager manager;
-    Dictionary<string, float> nodePosition;
-    Counter lateResponseCounter;
-    Counter totalResponseCounter;
+    private SuperklubManager manager;
+    private Dictionary<string, float> nodePosition;
+    private Counter lateMessagesCounter;
+    private Counter totalMessagesCounter;
 
     public ReaderRequestWorker(
         SuperklubManager manager,
         Dictionary<string, float> nodePosition,
-        Counter lateResponseCounter,
-        Counter totalResponseCounter)
+        Counter lateMessagesCounter,
+        Counter totalMessagesCounter)
     {
         this.manager = manager;
         this.nodePosition = nodePosition;
-        this.lateResponseCounter = lateResponseCounter;
-        this.totalResponseCounter = totalResponseCounter;
+        this.lateMessagesCounter = lateMessagesCounter;
+        this.totalMessagesCounter = totalMessagesCounter;
     }
 
     /// <summary>
@@ -58,17 +58,17 @@ public class ReaderRequestWorker
         }
 
         //
-        totalResponseCounter.Inc();
+        totalMessagesCounter.Inc();
         Console.WriteLine("    [Reader] " + nodeId + " : received=" + node.Position.x + "    stored=" + nodePosition[nodeId]);
 
-        // Is it a late response ?
-        bool isLateresponse = (node.Position.x < nodePosition[nodeId]);
+        // Is it a late message ?
+        bool isLateMessage = (node.Position.x < nodePosition[nodeId]);
         
-        if (isLateresponse)
+        if (isLateMessage)
         {
-            lateResponseCounter.Inc();
+            lateMessagesCounter.Inc();
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("    [Reader] " + nodeId + " late response (" + lateResponseCounter.Count + "/" + totalResponseCounter.Count + ")");
+            Console.WriteLine("    [Reader] " + nodeId + " late message (" + lateMessagesCounter.Count + "/" + totalMessagesCounter.Count + ")");
             Console.ForegroundColor = ConsoleColor.White;
         }
         else

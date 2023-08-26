@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 /// <summary>
 /// Run 1000 read requests to a channel and count
-/// - the late responses
-/// - the correct responses
+/// - the late messages
+/// - the on-time messages
 /// </summary>
 public class ReaderLoopWorker
 {
@@ -22,8 +22,8 @@ public class ReaderLoopWorker
     Dictionary<string, float> nodePosition;
 
     //
-    public Counter lateResponseCounter { get; } = new Counter();
-    public Counter totalResponseCounter { get; } = new Counter();
+    public Counter LateMessagesCounter { get; } = new Counter();
+    public Counter TotalMessagesCounter { get; } = new Counter();
 
     /// <summary>
     /// 
@@ -64,8 +64,8 @@ public class ReaderLoopWorker
             ReaderRequestWorker w = new ReaderRequestWorker(
                 manager,
                 nodePosition,
-                lateResponseCounter,
-                totalResponseCounter);
+                LateMessagesCounter,
+                TotalMessagesCounter);
             Thread thread = new Thread(w.ExecuteRequest);
             thread.Name = "reader thread";
             thread.Start();

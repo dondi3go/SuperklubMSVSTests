@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class LateResponsesTest
+public class LateMessagesTest
 {
     /// <summary>
     /// Perform concurrent read/write requests on a channel with or without
@@ -14,15 +14,15 @@ public class LateResponsesTest
     /// </summary>
     public static void RunTest(string serverUrl, string channel, int callPerSecond)
     {
-        Console.WriteLine("Running late responses test");
+        Console.WriteLine("Running late messages test");
 
-        // Run scenario WITHOUT late reponse handling
+        // Run scenario WITHOUT late messages handling
         List<int> resultA = RunScenario(serverUrl, channel, callPerSecond, false);
 
         // Wait for disconnection
         Thread.Sleep(6000);
 
-        // Run scenario WITH late reponse handling
+        // Run scenario WITH late messages handling
         List<int> resultB = RunScenario(serverUrl, channel, callPerSecond, true);
 
         // Compare result
@@ -64,11 +64,11 @@ public class LateResponsesTest
 
         // Get result
         List<int> result = new List<int>();
-        result.Add(reader.lateResponseCounter.Count);
-        result.Add(reader.totalResponseCounter.Count);
+        result.Add(reader.LateMessagesCounter.Count);
+        result.Add(reader.TotalMessagesCounter.Count);
 
         // Display result
-        Console.WriteLine("Late responses = " + result[0] + " / " + result[1]);
+        Console.WriteLine("Late messages = " + result[0] + " / " + result[1]);
 
         // Return result
         return result;

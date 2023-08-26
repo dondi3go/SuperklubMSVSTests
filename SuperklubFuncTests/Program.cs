@@ -16,7 +16,7 @@ string serverUrl = "http://127.0.0.1:5000";
 //
 // This test takes time (2 sesions of 1000 requests).
 // The difference is obvious with a server deployed on a VPS.
-// On a server running on 127.0.0.1, late responses aren't usually seen.
+// On a server running on 127.0.0.1, late messages aren't usually seen.
 //
-LateResponsesTest.RunTest(serverUrl, "lateResponsesTest", 40);
+LateMessagesTest.RunTest(serverUrl, "lateMessagesTest", 40);
 
