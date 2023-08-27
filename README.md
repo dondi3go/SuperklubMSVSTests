@@ -1,6 +1,6 @@
-# SuperklubMSVCTests
+# SuperklubStudioTests
 
-Unit, functionnal and performance tests for **Superklub**
+Tests (Unit, functionnal and performance tests) for **Superklub** with Visual Studio
 
 ## Installation
 
@@ -24,9 +24,9 @@ Do not forget to run `git submodule update --init --recursive` after cloning.
     * It connects to the server
     * Compare project logs with server logs
 * SuperklubSpiningBlueBox
-    * This one is usefull to the **SuperklubUnityTest** (see repo)
+    * This one is usefull to the **SuperklubUnityTests** (see repo)
     * Run the **supersynk** server (See supersynk repo)
-    * Run the **SuperklubUnityTest** app
+    * Run the **SuperklubUnityTests** app
     * Run SuperklubSpiningBlueBox
     * You should see the updates on the server logs
     * You should see a rotating blue cube on the Unity app 
